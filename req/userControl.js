@@ -3,7 +3,7 @@ var rooms=require('../rooms');
 userControl.getUserInfo=function(app){
   app.get('/create-room',function(req,res){
    	/*--------判断房卡是否有效--------*/
-   	console.log(req)
+   	// console.log(req)
     rooms.push({roomNo:req.query.roomNo})
    	res.status(200),
  	  res.json('创建成功！')

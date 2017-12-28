@@ -17,17 +17,21 @@
   <body>
     <ul id="messages"></ul>
       create room:<input id="my" autocomplete="off" /><button id="cre">Send</button>
-      come room:<input id="mt" autocomplete="off" /><button id="com">Send</button>
+      come message:<input id="mt" autocomplete="off" /><button id="com">Send</button>
+      send room:<input id="sendMsg" autocomplete="off" /><button id="send">Send</button>
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
       $(function () {
-        var socket = io();
-        var flag = false
+        var socket = null;
+        var flag = false;
+        var roomId = null;
         $('#cre').click(function(){
-          $.get("/create-room",{roomNo:11},function(result){
+          roomId = $("#my").val();
+          $.get("/create-room",{roomNo:roomId},function(result){
             alert(432434)
-            socket.on('11', function(msg){
+            socket = io();
+            socket.on($("#my").val(), function(msg){
               $('#messages').append($('<li>').text(msg.msg));
               window.scrollTo(0, document.body.scrollHeight);
             });
@@ -36,15 +40,41 @@
           // $('#m').val('');
           // return false;
         });
+        // $('#com').click(function(){
+        //   $.get("/come-room",{roomNo:11},function(result){
+        //       socket.emit('11', {msg: $("#mt").val()});
+        //       socket.on('11', function(msg){
+        //         $('#messages').append($('<li>').text(msg.msg));
+        //         window.scrollTo(0, document.body.scrollHeight);
+        //       });
+        //       alert(result)
+        //   });
+          
+          
+        // });
+        $('#send').click(function(){
+              socket.emit(roomId, {msg: $("#sendMsg").val()});
+              // socket.on('11', function(msg){
+              //   $('#messages').append($('<li>').text(msg.msg));
+              //   window.scrollTo(0, document.body.scrollHeight);
+              // });
+              // alert(result)
+      
+          
+          // socket.emit('chat message', $('#m').val());
+          // $('#m').val('');
+          // return false;
+        });
         $('#com').click(function(){
-          $.get("/come-room",{roomNo:11},function(result){
-              socket.emit('11', {msg: $("#mt").val()});
-              socket.on('11', function(msg){
+              socket = io();
+              roomId = $("#mt").val();
+              // socket.emit('11', {msg: $("#mt").val()});
+              socket.on($("#mt").val(), function(msg){
                 $('#messages').append($('<li>').text(msg.msg));
                 window.scrollTo(0, document.body.scrollHeight);
               });
-              alert(result)
-          });
+              // alert(result)
+      
           
           // socket.emit('chat message', $('#m').val());
           // $('#m').val('');

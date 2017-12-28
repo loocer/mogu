@@ -5,6 +5,7 @@ var port = process.env.PORT || 3000;
 var rooms=require('./rooms');
 
 function roomSocket(socket){
+  console.log('所有房间------------')
 	console.log(rooms)
 	for(let i in rooms){
       socket.on(rooms[i].roomNo, function(msgObj){
