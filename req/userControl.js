@@ -6,14 +6,14 @@ userControl.getUserInfo=function(app){
    	console.log(req)
     rooms.push({roomNo:req.query.roomNo})
    	res.status(200),
- 	res.json('创建成功！')
+ 	  res.json('创建成功！')
   })
 }
 userControl.tfreg=function(app){
   app.get('/come-room',function(req,res){
    	/*--------判断房卡是否有效--------*/
    	res.status(200),
- 	res.json('jinru fnagjian ！')
+ 	  res.json('jinru fnagjian ！')
   })
 }
 // userControl.getTset=function(app){
