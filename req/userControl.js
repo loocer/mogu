@@ -1,21 +1,84 @@
+var demoData = require('./tools/demoData')
 var userControl={};
 var rooms=require('../rooms');
+var RoomPlayers = require('../gameMain/roomPlayers');
+var filter = require('./tools/filter')
+var results = {}
 userControl.getUserInfo=function(app){
-  app.get('/create-room',function(req,res){
+  app.get('/create-room',filter.authorize,function(req,res){
+    console.log(req.query.roomNo)
+    let roomNo = req.query.roomNo
+    let peopleNum = req.query.peopleNum
    	/*--------判断房卡是否有效--------*/
    	// console.log(req)
-    rooms.push({roomNo:req.query.roomNo})
-   	res.status(200),
- 	  res.json('创建成功！')
+    var status = false
+    for(var n in demoData.rooms){
+      if(demoData.rooms[n].id == roomNo){
+        status = true
+      }
+    }
+    if(status){
+      for(let i in rooms){
+        if(rooms[i].id == roomNo){
+          status = false
+        }
+      }
+      if(!status){
+        results.status = 2
+        results.msg = '房间号已被创建！'
+        res.status(403),
+        res.json(results)
+      }
+      if(status){
+        let roomPlayers = new RoomPlayers({id:roomNo, peopleNum:peopleNum})
+        rooms.push(roomPlayers)
+        results.status = 1
+        results.msg = '房间创建成功！'
+        res.status(200),
+        res.json(results)
+      }
+    }else{
+      results.status = 0
+      results.msg = '没有这个房间（房号不对）！'
+      res.status(200),
+      res.json(results)
+    }
   })
 }
-userControl.tfreg=function(app){
-  app.get('/come-room',function(req,res){
-   	/*--------判断房卡是否有效--------*/
-   	res.status(200),
- 	  res.json('jinru fnagjian ！')
+userControl.login=function(app){
+  app.post('/login',function(req,res){
+    var user = req.body
+    var users = demoData.users
+    let statusCode = null
+    for(var u in users){
+      users[u].name === user.name
+      if(users[u].name === user.name){
+        if(users[u].password === user.password){
+          statusCode = 1
+        }else{
+          statusCode = 0
+        }
+      }
+    }
+    if(statusCode ===1){
+      req.session.user_id = users[u].id
+      results.status = 1
+      results.msg = '创建成功！'
+      res.status(200)
+    }else if(statusCode ===0){
+      req.session.user_id = users[u].id
+      res.status(401),
+      results.status = 0
+      results.msg = '密码错误！'
+    }else{
+      res.status(401),
+      results.status = 2
+      results.msg = '无此用户！'
+    }
+    res.json(results)
   })
 }
+
 // userControl.getTset=function(app){
 //  app.get('/get-test',function(req,res){
 //  	userDao.test().then(function(value){

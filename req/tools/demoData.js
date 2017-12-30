@@ -1,0 +1,62 @@
+exports.users = [
+	{
+		id:'r42r3r4',
+		name:'ted',
+		password:'ted324,./'
+	},
+	{
+		id:'g43533',
+		name:'tom',
+		password:'123qwe'
+	},
+	{
+		id:'y65y65u',
+		name:'jeff',
+		password:'123qwe'
+	},
+	{
+		id:'t534t54t',
+		name:'nimabi',
+		password:'123456'
+	},
+	{
+		id:'g54g4',
+		name:'bsuil',
+		password:'tom5032'
+	},
+	{
+		id:'4r3w4rt4',
+		name:'zhang3',
+		password:'123456'
+	}
+]
+exports.rooms = [
+	{
+		id:434
+	},
+	{
+		id:7657
+	},
+	{
+		id:123
+	},
+	{
+		id:354465
+	},
+	{
+		id:23
+	},
+	{
+		id:424
+	},
+	{
+		id:54354
+	},
+	{
+		id:9878
+	},
+	{
+		id:435345
+	}
+
+]

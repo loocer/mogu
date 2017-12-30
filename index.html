@@ -28,7 +28,7 @@
         var roomId = null;
         $('#cre').click(function(){
           roomId = $("#my").val();
-          $.get("/create-room",{roomNo:roomId},function(result){
+          $.get("/create-room",{roomNo:roomId,peopleNum:5},function(result){
             alert(432434)
             socket = io();
             socket.on($("#my").val(), function(msg){
@@ -53,6 +53,7 @@
           
         // });
         $('#send').click(function(){
+            console.log(roomId)
               socket.emit(roomId, {msg: $("#sendMsg").val()});
               // socket.on('11', function(msg){
               //   $('#messages').append($('<li>').text(msg.msg));
@@ -66,13 +67,22 @@
           // return false;
         });
         $('#com').click(function(){
+            roomId = $("#mt").val();
+            $.get("/come-room",{roomNo:roomId},function(result){
+              console.log(result)
               socket = io();
-              roomId = $("#mt").val();
-              // socket.emit('11', {msg: $("#mt").val()});
-              socket.on($("#mt").val(), function(msg){
+              socket.on(roomId, function(msg){
                 $('#messages').append($('<li>').text(msg.msg));
                 window.scrollTo(0, document.body.scrollHeight);
               });
+            });
+             
+              // roomId = $("#mt").val();
+              // socket.emit('11', {msg: $("#mt").val()});
+              // socket.on($("#mt").val(), function(msg){
+              //   $('#messages').append($('<li>').text(msg.msg));
+              //   window.scrollTo(0, document.body.scrollHeight);
+              // });
               // alert(result)
       
           
