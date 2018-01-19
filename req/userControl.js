@@ -33,6 +33,8 @@ userControl.getUserInfo=function(app){
         let roomPlayers = new RoomPlayers({id:roomNo, peopleNum:peopleNum})
         rooms.push(roomPlayers)
         results.status = 1
+        roomPlayers.addPlayer(req.session.user_id)
+        results.data = {roomNo:roomNo,peopleNum:peopleNum}
         results.msg = '房间创建成功！'
         res.status(200),
         res.json(results)
@@ -43,6 +45,43 @@ userControl.getUserInfo=function(app){
       res.status(200),
       res.json(results)
     }
+  })
+}
+userControl.addPlaytoRoom=function(app){
+  app.get('/into-room',filter.authorize,function(req,res){
+    console.log(req.query.roomNo)
+    let roomNo = req.query.roomNo
+    /*--------判断房卡是否有效--------*/
+    // console.log(req)
+    let status = false
+    // for(var n in demoData.rooms){
+    //   if(demoData.rooms[n].id == roomNo){
+    //     status = true
+    //   }
+    // }
+    let room = null
+    for(let i in rooms){
+        if(rooms[i].id == roomNo){
+          status = true
+          room= rooms[i]
+        }
+      }
+    if(status){
+      if(room.players.length < room.peopleNum){
+        room.addPlayer(req.session.user_id)
+        results.status = 1
+        results.data = {roomNo:roomNo,peopleNum:room.peopleNum}
+        results.msg = '欢迎进入！'
+        res.status(200),
+        res.json(results)
+      }else{
+        results.status = 0
+        results.msg = '进入失败！'
+        res.status(200),
+        res.json(results)
+      }
+    }
+      
   })
 }
 userControl.login=function(app){
