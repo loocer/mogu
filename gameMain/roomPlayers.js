@@ -1,9 +1,21 @@
 var ZhajinhuaPlayer=require('./player');
 const stepType = {
+	ON_START : 'ON_START',
+	SHOW_VALUE : 'SHOW_VALUE',
+	GAME_PASS : 'GAME_PASS',
+	RAISE: 'RAISE'
+}
+const acType = {
 	ON_READY : 'ON_READY',
 	OK_READY : 'OK_READY',
 	DEAL_PLAYING : 'DEAL_PLAYING',
 	PK_PLAYERS: 'PK_PLAYERS'
+}
+var playerStatus = {
+	SHOW : 'SHOW',
+	PASS : 'PASS',
+	RAISE: 'RAISE',
+	SOHA : 'SOHA'
 }
 const AllPosations = {
 	TYPE_TWO:[{x:0,y:0,z:0},{x:0,y:0,z:0}],
@@ -22,7 +34,56 @@ class roomPlayers{
 		this.status = true
 		this.totalRaiseMoney = 0
 		this.fireId = null
+		this.sendObj = null
+		this.readys = []
 		this.players = []
+	}
+	receiveMsg(msgObj){
+ 		if(msgObj.acType === acType.ON_START){
+ 			if(this.peopleNum===this.players.length){
+ 				this.sendObj = {acType:acType.ON_START,allow:true}
+ 			}else{
+ 				this.sendObj = {acType:acType.ON_START,allow:false}
+ 			}
+ 		}
+ 		if(msgObj.acType === acType.SHOW_VALUE){
+ 			this.sendObj = {acType:acType.SHOW_VALUE}
+ 		}
+ 		if(msgObj.acType === acType.GAME_PASS){
+ 			this.sendObj = {acType:acType.GAME_PASS}
+ 		}
+ 		if(msgObj.acType === acType.RAISE){
+ 			this.sendObj = {acType:acType.RAISE,amount:msgObj.amount}
+ 		}
+ 		if(msgObj.acType === acType.RAISE){
+ 			this.sendObj = {acType:acType.RAISE,amount:msgObj.amount}
+ 		}
+	}
+
+	setPokersValue(){
+		function getRandomArrayElements(arr, count) {
+		    var shuffled = arr.slice(0), i = arr.length, min = i - count, temp, index;
+		    while (i-- > min) {
+		        index = Math.floor((i + 1) * Math.random());
+		        temp = shuffled[index];
+		        shuffled[index] = shuffled[i];
+		        shuffled[i] = temp;
+		    }
+		    return shuffled.slice(min);
+		}
+
+		var items = [];
+		for(let num = 1;num<53;num++){
+			items.push(num)
+		}
+		for(let p in this.players){
+			this.players[p].pokerValue = getRandomArrayElements(items, 3)
+		}
+	}
+	showValue(playId){
+		for(let p in this.players){
+			this.players[p].status = playerStatus.RAISE
+		}
 	}
 	_getAcPlayer(acObj){
 		for(let p in this.player){

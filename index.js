@@ -5,14 +5,16 @@ var parseurl = require('parseurl')
 var bodyParser = require('body-parser');
 var io = require('socket.io')(http);
 var port = process.env.PORT || 3000;
-var rooms=require('./rooms');
+var rooms=require('./gameMain/rooms');
+var gameObj=require('./gameMain/gameEngine');
 
 function roomSocket(socket){
   console.log('所有房间------------')
 	console.log(rooms)
 	for(let i in rooms){
       socket.on(rooms[i].id, function(msgObj){
-	    io.emit(rooms[i].id, msgObj);
+      let returnMsg = gameObj(msgObj)
+	    io.emit(rooms[i].id, returnMsg);
 	  });
 	}
 }

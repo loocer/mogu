@@ -2,6 +2,8 @@ var demoData = require('./tools/demoData')
 var userControl={};
 var rooms=require('../rooms');
 var RoomPlayers = require('../gameMain/roomPlayers');
+var ZhajinhuaPlayer=require('../gameMain/player');
+
 var filter = require('./tools/filter')
 var results = {}
 userControl.getUserInfo=function(app){
@@ -33,7 +35,9 @@ userControl.getUserInfo=function(app){
         let roomPlayers = new RoomPlayers({id:roomNo, peopleNum:peopleNum})
         rooms.push(roomPlayers)
         results.status = 1
-        roomPlayers.addPlayer(req.session.user_id)
+        var player = new ZhajinhuaPlayer(req.session.user_id)
+        player.isMain = true
+        roomPlayers.addPlayer(player)
         results.data = {roomNo:roomNo,peopleNum:peopleNum}
         results.msg = '房间创建成功！'
         res.status(200),
