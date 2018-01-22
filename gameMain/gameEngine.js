@@ -1,35 +1,45 @@
 var gameObj=require('./serverGameMain');
 var RoomPlayers = require('./roomPlayers');
 var rooms=require('./rooms');
+var frontRoomPlayers = {}
 const acType = {
-	ON_READY : 'ON_READY',
-	OK_READY : 'OK_READY',
-	DEAL_PLAYING : 'DEAL_PLAYING',
-	PK_PLAYERS: 'PK_PLAYERS'
+	ON_START : 'ON_START',
+	SHOW_VALUE : 'SHOW_VALUE',
+	GAME_PASS : 'GAME_PASS',
+	RAISE: 'RAISE'
 }
 function main(msg){
 	for(let i in rooms){
 		if(rooms[i].id == msg.roomId){
-			if(msgObj.acType === acType.ON_START){
-	 			if(this.peopleNum===this.players.length){
+			let sendObj = null
+			if(msg.acType === acType.ON_START){
+	 			if(rooms[i].peopleNum===rooms[i].players.length){
 	 				rooms[i].setPokersValue()
-	 				this.sendObj = {acType:acType.ON_START,allow:true}
+	 				sendObj = {acType:acType.ON_START,allow:true,roomPlayers:rooms[i]}
 	 			}else{
-	 				this.sendObj = {acType:acType.ON_START,allow:false}
+	 				sendObj = {acType:acType.ON_START,allow:false}
 	 			}
 		 	}
-	 		if(msgObj.acType === acType.SHOW_VALUE){
-	 			this.sendObj = {acType:acType.SHOW_VALUE}
+	 		if(msg.acType === acType.SHOW_VALUE){
+	 			rooms[i].showValue(msg.playerId)
+	 			frontRoomPlayers.acType = acType.SHOW_VALUE
+	 			frontRoomPlayers.playerId = msg.playerId
+	 			sendObj = {acType:acType.SHOW_VALUE,roomPlayers:rooms[i],backObj:frontRoomPlayers}
 	 		}
-	 		if(msgObj.acType === acType.GAME_PASS){
-	 			this.sendObj = {acType:acType.GAME_PASS}
+	 		if(msg.acType === acType.RAISE){
+	 			frontRoomPlayers.acType = acType.RAISE
+	 			frontRoomPlayers.playerId = msg.playerId
+	 			frontRoomPlayers.raiseMoney = msg.raiseMoney
+	 			rooms[i].onRaise(msg)
+	 			sendObj = {acType:acType.RAISE,roomPlayers:rooms[i],backObj:frontRoomPlayers}
 	 		}
-	 		if(msgObj.acType === acType.RAISE){
-	 			this.sendObj = {acType:acType.RAISE,amount:msgObj.amount}
+	 		if(msg.acType === acType.GAME_PASS){
+	 			frontRoomPlayers.acType = acType.GAME_PASS
+	 			frontRoomPlayers.playerId = msg.playerId
+	 			rooms[i].onPass(msg)
+	 			sendObj = {acType:acType.GAME_PASS,roomPlayers:rooms[i],backObj:frontRoomPlayers}
 	 		}
-	 		if(msgObj.acType === acType.RAISE){
-	 			this.sendObj = {acType:acType.RAISE,amount:msgObj.amount}
-	 		}
+	 		return sendObj
 		}
 	}
 }

@@ -32,6 +32,7 @@ class roomPlayers{
 		this.peopleNum = peopleNum
 		this.stepType = stepType.ON_READY
 		this.status = true
+		this.raiseMoney = 1
 		this.totalRaiseMoney = 0
 		this.fireId = null
 		this.sendObj = null
@@ -71,7 +72,6 @@ class roomPlayers{
 		    }
 		    return shuffled.slice(min);
 		}
-
 		var items = [];
 		for(let num = 1;num<53;num++){
 			items.push(num)
@@ -82,7 +82,27 @@ class roomPlayers{
 	}
 	showValue(playId){
 		for(let p in this.players){
-			this.players[p].status = playerStatus.RAISE
+			if(this.players[p].id ==playId){
+				this.players[p].status = playerStatus.RAISE
+			}
+		}
+	}
+	
+	onRaise(msgObj){
+		for(let p in this.players){
+			if(this.players[p].id ==msgObj.playId){
+				this.players[p].status = playerStatus.RAISE
+				this.raiseMoney = msgObj.raiseMoney
+				this.players[p].raiseMoney = msgObj.raiseMoney
+				this.totalRaiseMoney += msgObj.raiseMoney
+			}
+		}
+	}
+	onPass(msgObj){
+		for(let p in this.players){
+			if(this.players[p].id ==msgObj.playId){
+				this.players[p].status = playerStatus.PASS
+			}
 		}
 	}
 	_getAcPlayer(acObj){
