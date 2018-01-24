@@ -105,6 +105,9 @@ class roomPlayers{
 			}
 		}
 	}
+	onPk(msgObj){
+		
+	}
 	_getAcPlayer(acObj){
 		for(let p in this.player){
 			if(this.player[p].id = acObj.id){

@@ -1,6 +1,6 @@
 var demoData = require('./tools/demoData')
 var userControl={};
-var rooms=require('../rooms');
+var rooms=require('../gameMain/rooms');
 var RoomPlayers = require('../gameMain/roomPlayers');
 var ZhajinhuaPlayer=require('../gameMain/player');
 
@@ -34,6 +34,7 @@ userControl.getUserInfo=function(app){
       if(status){
         let roomPlayers = new RoomPlayers({id:roomNo, peopleNum:peopleNum})
         rooms.push(roomPlayers)
+        console.log(rooms)
         results.status = 1
         var player = new ZhajinhuaPlayer(req.session.user_id)
         player.isMain = true

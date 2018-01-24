@@ -8,6 +8,7 @@ class player{
 	constructor(id){
 		this.id = id
 		this.isMain = false
+		this.isEnable = false
 		this.status = acType.RAISE
 		this.posation = {x:0,y:0,z:0}
 		this.isAction = true,//it is protagonist
