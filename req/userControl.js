@@ -38,8 +38,8 @@ userControl.getUserInfo=function(app){
         results.status = 1
         var player = new ZhajinhuaPlayer(req.session.user_id)
         player.isMain = true
-        roomPlayers.addPlayer(player)
-        results.data = {roomNo:roomNo,peopleNum:peopleNum}
+        roomPlayers.players.push(player)
+        results.data = {roomNo:roomNo,peopleNum:peopleNum,userId:req.session.user_id}
         results.msg = '房间创建成功！'
         res.status(200),
         res.json(results)
@@ -73,7 +73,9 @@ userControl.addPlaytoRoom=function(app){
       }
     if(status){
       if(room.players.length < room.peopleNum){
-        room.addPlayer(req.session.user_id)
+        var player = new ZhajinhuaPlayer(req.session.user_id)
+        player.isMain = true
+        room.players.push(player)
         results.status = 1
         results.data = {roomNo:roomNo,peopleNum:room.peopleNum}
         results.msg = '欢迎进入！'
@@ -98,6 +100,7 @@ userControl.login=function(app){
       users[u].name === user.name
       if(users[u].name === user.name){
         if(users[u].password === user.password){
+          user.id = users[u].id
           statusCode = 1
         }else{
           statusCode = 0
@@ -108,6 +111,7 @@ userControl.login=function(app){
       req.session.user_id = users[u].id
       results.status = 1
       results.msg = '创建成功！'
+      results.data = {user:user}
       res.status(200)
     }else if(statusCode ===0){
       req.session.user_id = users[u].id
