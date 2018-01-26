@@ -19,7 +19,9 @@ function main(msg){
  				for(let p in rooms[i].players){
  					rooms[i].players[p].isEnable = true
  				}
- 				sendObj = {acType:acType.ON_READY,roomPlayers:rooms[i]}
+ 				frontRoomPlayers.acType = acType.ON_READY
+	 			frontRoomPlayers.playerId = msg.playerId
+ 				sendObj = {acType:acType.ON_READY,roomPlayers:rooms[i],backObj:frontRoomPlayers}
 		 	}
 			if(msg.acType === acType.ON_START){
 	 			if(rooms[i].peopleNum===rooms[i].players.length){

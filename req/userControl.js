@@ -34,11 +34,13 @@ userControl.getUserInfo=function(app){
       if(status){
         let roomPlayers = new RoomPlayers({id:roomNo, peopleNum:peopleNum})
         rooms.push(roomPlayers)
-        console.log(rooms)
+        
         results.status = 1
+        console.log(req.session.user_id)
         var player = new ZhajinhuaPlayer(req.session.user_id)
         player.isMain = true
         roomPlayers.players.push(player)
+        // console.log(roomPlayers)
         results.data = {roomNo:roomNo,peopleNum:peopleNum,userId:req.session.user_id}
         results.msg = '房间创建成功！'
         res.status(200),
@@ -108,13 +110,13 @@ userControl.login=function(app){
       }
     }
     if(statusCode ===1){
-      req.session.user_id = users[u].id
+      req.session.user_id = user.id
       results.status = 1
       results.msg = '创建成功！'
       results.data = {user:user}
       res.status(200)
     }else if(statusCode ===0){
-      req.session.user_id = users[u].id
+      req.session.user_id = user.id
       res.status(401),
       results.status = 0
       results.msg = '密码错误！'
