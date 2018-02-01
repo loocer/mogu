@@ -76,7 +76,7 @@ userControl.addPlaytoRoom=function(app){
     if(status){
       if(room.players.length < room.peopleNum){
         var player = new ZhajinhuaPlayer(req.session.user_id)
-        player.isMain = true
+        player.isMain = false
         room.players.push(player)
         results.status = 1
         results.data = {roomNo:roomNo,peopleNum:room.peopleNum}

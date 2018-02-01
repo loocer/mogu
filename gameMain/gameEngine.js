@@ -24,11 +24,13 @@ function main(msg){
  				sendObj = {acType:acType.ON_READY,roomPlayers:rooms[i],backObj:frontRoomPlayers}
 		 	}
 			if(msg.acType === acType.ON_START){
-	 			if(rooms[i].peopleNum===rooms[i].players.length){
+	 			if(rooms[i].peopleNum==rooms[i].players.length){
 	 				rooms[i].setPokersValue()
 	 				sendObj = {acType:acType.ON_START,allow:true,roomPlayers:rooms[i]}
 	 			}else{
-	 				sendObj = {acType:acType.ON_START,allow:false}
+	 				frontRoomPlayers.acType = acType.ON_START
+	 				frontRoomPlayers.playerId = msg.playerId
+	 				sendObj = {acType:acType.ON_START,allow:false,roomPlayers:rooms[i],backObj:frontRoomPlayers}
 	 			}
 		 	}
 	 		if(msg.acType === acType.SHOW_VALUE){
