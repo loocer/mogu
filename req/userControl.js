@@ -128,7 +128,28 @@ userControl.login=function(app){
     res.json(results)
   })
 }
-
+userControl.getValue=function(app){
+  app.post('/get-value',function(req,res){
+    let roomNo = req.query.roomNo
+    let userId = req.session.user_id
+    let roomPlayers = null
+    let value = []
+    for(let i in rooms){
+      if(rooms[i].id == roomNo){
+        roomPlayers = rooms[i]
+      }
+    }
+    for(let t in roomPlayers.players){
+      if(userId == roomPlayers.players[t].id){
+        value = roomPlayers.players[t].pokerValue
+      }
+    }
+    results.msg = '获取成功！'
+    results.data = {value:value}
+    res.status(200)
+    res.json(results)
+  })
+}
 // userControl.getTset=function(app){
 //  app.get('/get-test',function(req,res){
 //  	userDao.test().then(function(value){
