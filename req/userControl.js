@@ -139,6 +139,7 @@ userControl.getValue=function(app){
         roomPlayers = rooms[i]
       }
     }
+    console.log(roomPlayers)
     for(let t in roomPlayers.players){
       if(userId == roomPlayers.players[t].id){
         value = roomPlayers.players[t].pokerValue

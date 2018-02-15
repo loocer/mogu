@@ -30,7 +30,7 @@ function main(msg){
 	 			}else{
 	 				frontRoomPlayers.acType = acType.ON_START
 	 				frontRoomPlayers.playerId = msg.playerId
-	 				sendObj = {acType:acType.ON_START,allow:false,roomPlayers:rooms[i],backObj:frontRoomPlayers}
+	 				sendObj = {acType:acType.ON_START,allow:true,roomPlayers:rooms[i],backObj:frontRoomPlayers}
 	 			}
 		 	}
 	 		if(msg.acType === acType.SHOW_VALUE){
