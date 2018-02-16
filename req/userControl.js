@@ -5,9 +5,9 @@ var RoomPlayers = require('../gameMain/roomPlayers');
 var ZhajinhuaPlayer=require('../gameMain/player');
 
 var filter = require('./tools/filter')
-var results = {}
 userControl.getUserInfo=function(app){
   app.get('/create-room',filter.authorize,function(req,res){
+    let results = {}
     console.log(req.query.roomNo)
     let roomNo = req.query.roomNo
     let peopleNum = req.query.peopleNum
@@ -34,10 +34,19 @@ userControl.getUserInfo=function(app){
       if(status){
         let roomPlayers = new RoomPlayers({id:roomNo, peopleNum:peopleNum})
         rooms.push(roomPlayers)
-        
+        roomPlayers.totalRaiseMoney = roomPlayers.raiseMoney * roomPlayers.peopleNum
+
         results.status = 1
+        //------------------------------------//
+        let user = null
+        for(var u in  demoData.users){
+          if(demoData.users[u].id === req.session.user_id){
+            user = demoData.users[u]
+          }
+        }
+        //------------------------------------//
         console.log(req.session.user_id)
-        var player = new ZhajinhuaPlayer(req.session.user_id)
+        var player = new ZhajinhuaPlayer(user)
         player.isMain = true
         roomPlayers.players.push(player)
         // console.log(roomPlayers)
@@ -56,6 +65,7 @@ userControl.getUserInfo=function(app){
 }
 userControl.addPlaytoRoom=function(app){
   app.get('/into-room',filter.authorize,function(req,res){
+    let results = {}
     console.log(req.query.roomNo)
     let roomNo = req.query.roomNo
     /*--------判断房卡是否有效--------*/
@@ -75,7 +85,15 @@ userControl.addPlaytoRoom=function(app){
       }
     if(status){
       if(room.players.length < room.peopleNum){
-        var player = new ZhajinhuaPlayer(req.session.user_id)
+        //-----------------------------------//
+        let user = null
+        for(var u in  demoData.users){
+          if(demoData.users[u].id === req.session.user_id){
+            user = demoData.users[u]
+          }
+        }
+        //------------------------------------//
+        var player = new ZhajinhuaPlayer(user)
         player.isMain = false
         room.players.push(player)
         results.status = 1
@@ -95,11 +113,11 @@ userControl.addPlaytoRoom=function(app){
 }
 userControl.login=function(app){
   app.post('/login',function(req,res){
+    let results = {}
     var user = req.body
     var users = demoData.users
     let statusCode = null
     for(var u in users){
-      users[u].name === user.name
       if(users[u].name === user.name){
         if(users[u].password === user.password){
           user.id = users[u].id
@@ -130,10 +148,12 @@ userControl.login=function(app){
 }
 userControl.getValue=function(app){
   app.post('/get-value',function(req,res){
+    let results = {}
     let roomNo = req.query.roomNo
     let userId = req.session.user_id
     let roomPlayers = null
     let value = []
+    console.log()
     for(let i in rooms){
       if(rooms[i].id == roomNo){
         roomPlayers = rooms[i]

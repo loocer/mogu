@@ -1,15 +1,19 @@
 var acType = {
-	SHOW : 'SHOW',
-	PASS : 'PASS',
-	RAISE: 'RAISE',
-	SOHA : 'SOHA'
+	ON_READY : 'ON_READY',
+	ON_START : 'ON_START',
+	SHOW_VALUE : 'SHOW_VALUE',
+	GAME_PASS : 'GAME_PASS',
+	GAME_PK : 'GAME_PK',
+	ON_RAISE: 'ON_RAISE',
+	ADD_RAISE: 'ADD_RAISE'
 }
 class player{
-	constructor(id){
-		this.id = id
+	constructor(user){
+		this.id = user.id
+		this.user = user
 		this.isMain = false
 		this.isEnable = false
-		this.status = acType.RAISE
+		this.state = acType.ON_READY
 		this.posation = {x:0,y:0,z:0}
 		this.isAction = true,//it is protagonist
 		this.gameStatus = true,//is disabled

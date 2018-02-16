@@ -8,7 +8,8 @@ const acType = {
 	SHOW_VALUE : 'SHOW_VALUE',
 	GAME_PASS : 'GAME_PASS',
 	GAME_PK : 'GAME_PK',
-	RAISE: 'RAISE'
+	ON_RAISE: 'ON_RAISE',
+	ADD_RAISE: 'ADD_RAISE'
 }
 function main(msg){
 	console.log(msg)
@@ -33,6 +34,20 @@ function main(msg){
 	 				sendObj = {acType:acType.ON_START,allow:true,roomPlayers:rooms[i],backObj:frontRoomPlayers}
 	 			}
 		 	}
+		 	if(msg.acType === acType.ON_RAISE){
+	 			frontRoomPlayers.acType = acType.ONRAISE
+	 			frontRoomPlayers.playerId = msg.playerId
+	 			frontRoomPlayers.raiseMoney = msg.raiseMoney
+	 			rooms[i].onRaise(msg)
+	 			sendObj = {acType:acType.ON_RAISE,roomPlayers:rooms[i],backObj:frontRoomPlayers}
+	 		}
+	 		if(msg.acType === acType.ADDRAISE){
+	 			frontRoomPlayers.acType = acType.ADDRAISE
+	 			frontRoomPlayers.playerId = msg.playerId
+	 			frontRoomPlayers.raiseMoney = msg.raiseMoney
+	 			rooms[i].onRaise(msg)
+	 			sendObj = {acType:acType.ADDRAISE,roomPlayers:rooms[i],backObj:frontRoomPlayers}
+	 		}
 	 		if(msg.acType === acType.SHOW_VALUE){
 	 			rooms[i].showValue(msg.playerId)
 	 			frontRoomPlayers.acType = acType.SHOW_VALUE
@@ -41,13 +56,6 @@ function main(msg){
 	 		}
 	 		if(msg.acType === acType.GAME_PK){
 	 			frontRoomPlayers.acType = acType.GAME_PK
-	 			frontRoomPlayers.playerId = msg.playerId
-	 			frontRoomPlayers.raiseMoney = msg.raiseMoney
-	 			rooms[i].onRaise(msg)
-	 			sendObj = {acType:acType.RAISE,roomPlayers:rooms[i],backObj:frontRoomPlayers}
-	 		}
-	 		if(msg.acType === acType.RAISE){
-	 			frontRoomPlayers.acType = acType.RAISE
 	 			frontRoomPlayers.playerId = msg.playerId
 	 			frontRoomPlayers.raiseMoney = msg.raiseMoney
 	 			rooms[i].onRaise(msg)

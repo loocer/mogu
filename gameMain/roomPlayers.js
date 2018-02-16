@@ -7,9 +7,12 @@ const stepType = {
 }
 const acType = {
 	ON_READY : 'ON_READY',
-	OK_READY : 'OK_READY',
-	DEAL_PLAYING : 'DEAL_PLAYING',
-	PK_PLAYERS: 'PK_PLAYERS'
+	ON_START : 'ON_START',
+	SHOW_VALUE : 'SHOW_VALUE',
+	GAME_PASS : 'GAME_PASS',
+	GAME_PK : 'GAME_PK',
+	ON_RAISE: 'ON_RAISE',
+	ADD_RAISE: 'ADD_RAISE'
 }
 var playerStatus = {
 	SHOW : 'SHOW',
@@ -79,25 +82,47 @@ class roomPlayers{
 		for(let p in this.players){
 			this.players[p].pokerValue = getRandomArrayElements(items, 3)
 		}
+
 	}
 	showValue(playId){
 		for(let p in this.players){
 			if(this.players[p].id ==playId){
-				this.players[p].status = playerStatus.RAISE
+				this.players[p].status = acType.RAISE
 			}
 		}
 	}
-	
 	onRaise(msgObj){
+		console.log(this.players)
+		console.log(msgObj)
+		for(let p in this.players){
+			console.log(this.players[p].id + '-----------' + msgObj.playerId)
+			if(this.players[p].id ==msgObj.playerId){
+				this.players[p].state = acType.ON_RAISE
+				this.players[p].raiseMoney = this.raiseMoney
+				this.totalRaiseMoney += this.raiseMoney
+			}
+		}
+	}
+	addRaise(msgObj){
 		for(let p in this.players){
 			if(this.players[p].id ==msgObj.playId){
-				this.players[p].status = playerStatus.RAISE
+				this.players[p].state = acType.ADD_RAISE
 				this.raiseMoney = msgObj.raiseMoney
 				this.players[p].raiseMoney = msgObj.raiseMoney
 				this.totalRaiseMoney += msgObj.raiseMoney
 			}
 		}
 	}
+	// onRaise(msgObj){
+	// 	for(let p in this.players){
+	// 		if(this.players[p].id ==msgObj.playId){
+	// 			this.players[p].status = playerStatus.RAISE
+	// 			this.raiseMoney = msgObj.raiseMoney
+	// 			this.players[p].raiseMoney = msgObj.raiseMoney
+	// 			this.totalRaiseMoney += msgObj.raiseMoney
+	// 		}
+	// 	}
+	// }
 	onPass(msgObj){
 		for(let p in this.players){
 			if(this.players[p].id ==msgObj.playId){
