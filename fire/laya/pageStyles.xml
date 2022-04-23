@@ -1,0 +1,10 @@
+<page>
+   <item name="test/TestScene.scene" props="" ifExport="文件模式" aName=""/>
+   <item name="test/TEST.scene" props="" ifExport="分离模式" aName=""/>
+   <item name="test/fdf.scene" props="" ifExport="内嵌模式" aName=""/>
+   <item name="test/init.scene" props="" ifExport="默认" aName=""/>
+   <item name="test/loading.scene" props="" ifExport="加载模式" aName=""/>
+   <item name="test/game.scene" props="" ifExport="加载模式" aName=""/>
+   <item name="test/test.scene" props="" ifExport="文件模式" aName=""/>
+   <item name="test/wte.scene" props="" ifExport="内嵌模式" aName=""/>
+</page>

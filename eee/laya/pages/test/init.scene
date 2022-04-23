@@ -1,0 +1,27 @@
+{
+    "x":0,
+    "type":"Scene",
+    "selectedBox":2,
+    "selecteID":5,
+    "searchKey":"Scene,initUI,init",
+    "props":{"width":2000,"var":"init","sceneColor":"#000000","runtime":"script/InitUI.js","name":"initUI","height":2000},
+    "nodeParent":-1,
+    "maxID":9,
+    "label":"initUI",
+    "isOpen":true,
+    "isDirectory":false,
+    "isAniNode":true,
+    "hasChild":false,
+    "compId":2,
+    "child":[
+        ],
+    "animations":[
+        {
+            "nodes":[
+                ],
+            "name":"ani1",
+            "id":1,
+            "frameRate":24,
+            "action":0
+        }]
+}

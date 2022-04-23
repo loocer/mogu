@@ -1,0 +1,1 @@
+{"type":"Scene","props":{"width":2000,"runtime":"script/GameUI.js","height":3000},"compId":2,"child":[{"type":"Sprite","props":{"texture":"comp/radio.png","runtime":"script/hand/fire.js"},"compId":3}],"loadList":["comp/radio.png"],"loadList3D":[]}

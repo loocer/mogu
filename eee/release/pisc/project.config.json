@@ -1,0 +1,11 @@
+{
+    "setting": {
+        "urlCheck": true,
+        "es6": true,
+        "postcss": true,
+        "minified": true,
+        "newFeature": true
+    },
+    "appid": "tt3ca64a1ba39d92c3",
+    "projectname": "333"
+}

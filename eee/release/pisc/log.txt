@@ -1,0 +1,201 @@
+{
+    "您需要额外关注的转化日志信息": {
+        "0": {
+            "time": "2021-01-30T19:16:23.212Z",
+            "type": "transform function call arg name",
+            "file": "C:/project/guantongyunwang/baseProject/vr-fly/fuck/release/pisc/weapp-adapter.js",
+            "row": 646,
+            "column": 16,
+            "before": "wx.createCanvas",
+            "after": "tt.createCanvas",
+            "message": "api: createCanvas 未能识别，请确保该api用法正确。转化了上下文，wx.createCanvas ==> tt.createCanvas"
+        },
+        "1": {
+            "time": "2021-01-30T19:16:23.221Z",
+            "type": "transform function call arg name",
+            "file": "C:/project/guantongyunwang/baseProject/vr-fly/fuck/release/pisc/weapp-adapter.js",
+            "row": 810,
+            "column": 15,
+            "before": "wx.createImage",
+            "after": "tt.createImage",
+            "message": "api: createImage 未能识别，请确保该api用法正确。转化了上下文，wx.createImage ==> tt.createImage"
+        },
+        "2": {
+            "time": "2021-01-30T19:16:23.231Z",
+            "type": "transform function call arg name",
+            "file": "C:/project/guantongyunwang/baseProject/vr-fly/fuck/release/pisc/weapp-adapter.js",
+            "row": 1166,
+            "column": 1,
+            "before": "wx.onTouchStart",
+            "after": "tt.onTouchStart",
+            "message": "api: onTouchStart 未能识别，请确保该api用法正确。转化了上下文，wx.onTouchStart ==> tt.onTouchStart"
+        },
+        "3": {
+            "time": "2021-01-30T19:16:23.232Z",
+            "type": "transform function call arg name",
+            "file": "C:/project/guantongyunwang/baseProject/vr-fly/fuck/release/pisc/weapp-adapter.js",
+            "row": 1167,
+            "column": 1,
+            "before": "wx.onTouchMove",
+            "after": "tt.onTouchMove",
+            "message": "api: onTouchMove 未能识别，请确保该api用法正确。转化了上下文，wx.onTouchMove ==> tt.onTouchMove"
+        },
+        "4": {
+            "time": "2021-01-30T19:16:23.233Z",
+            "type": "transform function call arg name",
+            "file": "C:/project/guantongyunwang/baseProject/vr-fly/fuck/release/pisc/weapp-adapter.js",
+            "row": 1168,
+            "column": 1,
+            "before": "wx.onTouchEnd",
+            "after": "tt.onTouchEnd",
+            "message": "api: onTouchEnd 未能识别，请确保该api用法正确。转化了上下文，wx.onTouchEnd ==> tt.onTouchEnd"
+        },
+        "5": {
+            "time": "2021-01-30T19:16:23.234Z",
+            "type": "transform function call arg name",
+            "file": "C:/project/guantongyunwang/baseProject/vr-fly/fuck/release/pisc/weapp-adapter.js",
+            "row": 1169,
+            "column": 1,
+            "before": "wx.onTouchCancel",
+            "after": "tt.onTouchCancel",
+            "message": "api: onTouchCancel 未能识别，请确保该api用法正确。转化了上下文，wx.onTouchCancel ==> tt.onTouchCancel"
+        }
+    },
+    "其他常规转化日志信息": {
+        "0": {
+            "time": "2021-01-30T19:16:29.208Z",
+            "type": "stdOut",
+            "message": "🎊    Congratulations, transform done! Please check transform log in"
+        },
+        "1": {
+            "time": "2021-01-30T19:16:29.208Z",
+            "type": "stdOut",
+            "message": "📝    C:\\project\\guantongyunwang\\baseProject\\vr-fly\\fuck\\release\\pisc\\log.txt"
+        },
+        "2": {
+            "time": "2021-01-30T19:16:23.206Z",
+            "type": "transform function call arg name",
+            "file": "C:/project/guantongyunwang/baseProject/vr-fly/fuck/release/pisc/weapp-adapter.js",
+            "row": 243,
+            "column": 29,
+            "before": "wx.getSystemInfoSync",
+            "after": "tt.getSystemInfoSync",
+            "message": "api: getSystemInfoSync 成功转化"
+        },
+        "3": {
+            "time": "2021-01-30T19:16:23.225Z",
+            "type": "transform function call arg name",
+            "file": "C:/project/guantongyunwang/baseProject/vr-fly/fuck/release/pisc/weapp-adapter.js",
+            "row": 875,
+            "column": 29,
+            "before": "wx.createInnerAudioContext",
+            "after": "tt.createInnerAudioContext",
+            "message": "api: createInnerAudioContext 成功转化"
+        },
+        "4": {
+            "time": "2021-01-30T19:16:23.234Z",
+            "type": "transform function call arg name",
+            "file": "C:/project/guantongyunwang/baseProject/vr-fly/fuck/release/pisc/weapp-adapter.js",
+            "row": 1201,
+            "column": 29,
+            "before": "wx.getSystemInfoSync",
+            "after": "tt.getSystemInfoSync",
+            "message": "api: getSystemInfoSync 成功转化"
+        },
+        "5": {
+            "time": "2021-01-30T19:16:23.237Z",
+            "type": "transform function call arg name",
+            "file": "C:/project/guantongyunwang/baseProject/vr-fly/fuck/release/pisc/weapp-adapter.js",
+            "row": 1333,
+            "column": 9,
+            "before": "wx.request",
+            "after": "tt.request",
+            "message": "api: request 成功转化"
+        },
+        "6": {
+            "time": "2021-01-30T19:16:23.239Z",
+            "type": "transform function call arg name",
+            "file": "C:/project/guantongyunwang/baseProject/vr-fly/fuck/release/pisc/weapp-adapter.js",
+            "row": 1459,
+            "column": 22,
+            "before": "wx.connectSocket",
+            "after": "tt.connectSocket",
+            "message": "api: connectSocket 成功转化"
+        },
+        "7": {
+            "time": "2021-01-30T19:16:23.240Z",
+            "type": "transform function call arg name",
+            "file": "C:/project/guantongyunwang/baseProject/vr-fly/fuck/release/pisc/weapp-adapter.js",
+            "row": 1587,
+            "column": 33,
+            "before": "wx.getStorageInfoSync",
+            "after": "tt.getStorageInfoSync",
+            "message": "api: getStorageInfoSync 成功转化"
+        },
+        "8": {
+            "time": "2021-01-30T19:16:23.241Z",
+            "type": "transform function call arg name",
+            "file": "C:/project/guantongyunwang/baseProject/vr-fly/fuck/release/pisc/weapp-adapter.js",
+            "row": 1594,
+            "column": 34,
+            "before": "wx.getStorageInfoSync",
+            "after": "tt.getStorageInfoSync",
+            "message": "api: getStorageInfoSync 成功转化"
+        },
+        "9": {
+            "time": "2021-01-30T19:16:23.241Z",
+            "type": "transform function call arg name",
+            "file": "C:/project/guantongyunwang/baseProject/vr-fly/fuck/release/pisc/weapp-adapter.js",
+            "row": 1600,
+            "column": 12,
+            "before": "wx.getStorageSync",
+            "after": "tt.getStorageSync",
+            "message": "api: getStorageSync 成功转化"
+        },
+        "10": {
+            "time": "2021-01-30T19:16:23.241Z",
+            "type": "transform function call arg name",
+            "file": "C:/project/guantongyunwang/baseProject/vr-fly/fuck/release/pisc/weapp-adapter.js",
+            "row": 1603,
+            "column": 12,
+            "before": "wx.setStorageSync",
+            "after": "tt.setStorageSync",
+            "message": "api: setStorageSync 成功转化"
+        },
+        "11": {
+            "time": "2021-01-30T19:16:23.241Z",
+            "type": "transform function call arg name",
+            "file": "C:/project/guantongyunwang/baseProject/vr-fly/fuck/release/pisc/weapp-adapter.js",
+            "row": 1606,
+            "column": 5,
+            "before": "wx.removeStorageSync",
+            "after": "tt.removeStorageSync",
+            "message": "api: removeStorageSync 成功转化"
+        },
+        "12": {
+            "time": "2021-01-30T19:16:23.241Z",
+            "type": "transform function call arg name",
+            "file": "C:/project/guantongyunwang/baseProject/vr-fly/fuck/release/pisc/weapp-adapter.js",
+            "row": 1609,
+            "column": 5,
+            "before": "wx.clearStorageSync",
+            "after": "tt.clearStorageSync",
+            "message": "api: clearStorageSync 成功转化"
+        },
+        "13": {
+            "time": "2021-01-30T19:16:23.381Z",
+            "type": "stdOut",
+            "message": "🍻    Successfully transform js file"
+        },
+        "14": {
+            "time": "2021-01-30T19:16:23.404Z",
+            "type": "stdOut",
+            "message": "🍻    Successfully transform wxml file"
+        },
+        "15": {
+            "time": "2021-01-30T19:16:23.424Z",
+            "type": "stdOut",
+            "message": "🍻    Successfully transform wxss file"
+        }
+    }
+}
