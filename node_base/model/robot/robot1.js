@@ -2,7 +2,7 @@
 // import boxs  from '../../tools/rooms'
 let Box = require('../box')
 class Robot1 {
-    constructor(player, start) {
+    constructor(player, start,end) {
         this.id = (new Date()).valueOf();
         this.state = true
         this.player = player
@@ -15,7 +15,7 @@ class Robot1 {
         this.start = start || [0, 0]
         this.heroMapKey = null
         this.map = new Box(player.room.graph, this.start);
-        //    this.end = [99,22]
+           this.end = [end]
         //    this.setBox()
     }
     setBox() {

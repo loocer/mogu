@@ -1,6 +1,7 @@
 let Astar = require('../tools/astar.js');
 let Player = require('./player')
 let boxs = require('../tools/rooms')
+let House = require('./house')
 class Room {
    constructor() {
       this.players = new Map()
@@ -9,8 +10,19 @@ class Room {
       this.heroMap = new Map()
       this.graph = null
       this.moveGroups = []
+      this.houses = []
       this.createGraph()
       boxs.set(this.id, this)
+      this.createHouse()
+   }
+   createHouse(){
+      let h1 = new House(null,{x:20,y:30})
+      let h2 = new House(null,{x:200,y:30})
+      let h3 = new House(null,{x:100,y:120})
+      let h4 = new House(null,{x:230,y:50})
+      let h5 = new House(null,{x:330,y:160})
+      let h6 = new House(null,{x:100,y:150})
+      this.houses = [h1,h2,h3,h4,h5,h6]
    }
    createGraph() {
       let list = []
@@ -51,7 +63,7 @@ class Room {
             this.graph.grid[move2.x][move2.y].weight=0
          }
       }
-      for (let value of players.values()) {
+      for (let value of this.houses) {
          value.update()
       }
    }
@@ -137,7 +149,7 @@ class Room {
       //    }
       // }
       let list = []
-      for (let obj of this.players.values()) {
+      for (let obj of this.houses) {
          list.push(obj.getPushMsg())
       }
      

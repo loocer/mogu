@@ -13,9 +13,9 @@ import {
 
 function createGraph() {
 	let list = []
-	for (let i = 0; i < 500; i++) {
+	for (let i = 0; i < 200; i++) {
 		let list1 = []
-		for (let o = 0; o < 500; o++) {
+		for (let o = 0; o < 350; o++) {
 			list1.push(1)
 		}
 		list.push(list1)
@@ -61,6 +61,18 @@ let ryMoveGroup = null
 let outPos = new Laya.Vector3();
 let tempRotMap = new Map()
 let time = 0
+
+function createInfoText(p,id) {
+	let info = new Laya.Text();
+	info.name = id+'rotNum'
+	info.text = '50'
+	info.fontSize = 50;
+	info.color = "#FFFFFF";
+	info.size(Laya.stage.width, Laya.stage.height);
+	utl.camera.viewport.project(p, utl.camera.projectionViewMatrix, outPos);
+	info.pos((outPos.x - 40) / Laya.stage.clientScaleX, (outPos.y - 30) / Laya.stage.clientScaleY);
+	Laya.stage.addChild(this.info);
+}
 export const socketMain = () => {
 	createGraph()
 	// const socket = new WebSocket('ws://xuxin.love:3000');
@@ -74,20 +86,27 @@ export const socketMain = () => {
 
 	// // })
 	// return
-	// utl.socket = io('ws://192.168.0.105:3000');
+	utl.socket = io('ws://192.168.0.110:3000');
 	// utl.socket = io('ws://192.168.11.37:3000');
-	utl.socket = io('wss://xuxin.love:3000');
+	// utl.socket = io('wss://xuxin.love:3000');
 	utl.socket.on('123456', (s) => {
-		
+
 		time++
 		resetGraph()
-		tempRotMap.clear()
-		utl.mapSp.graphics.clear()
-		utl.mapSp.graphics.drawRect(0, 0, 400, 400, "#00000066");
-		for (let player of s.list) {
-			if (player.playerId == utl.playerId) {
-				ryMoveGroup = player.ryMoveGroup
-				utl.info.text = player.killNum
+
+		for (let obj of s.list) {
+			for (let house of obj.houseList) {
+				if (utl.houseList.has(house.id)) {
+					let info = Laya.getChildByName(house.id+'rotNum')
+					info.text =  house.rotNum
+				} else {
+					let houseBox = utl.models.get('house')
+					utl.newScene.addChild(houseBox);
+					houseBox.transform.position = new Laya.Vector3(-house.x, 3, house.y)
+					utl.houseList.set(house.id, houseBox)
+					createInfoText(houseBox,house.id)
+				}
+
 			}
 			for (let rot of player.rots) {
 				if (utl.entityMap.has(rot.id)) {
