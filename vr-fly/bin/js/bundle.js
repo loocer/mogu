@@ -1542,7 +1542,7 @@
 
    	// // })
    	// return
-   	utl.socket = io('ws://192.168.0.110:3000');
+   	utl.socket = io('ws://192.168.0.105:3000');
    	// utl.socket = io('ws://192.168.11.37:3000');
    	// utl.socket = io('wss://xuxin.love:3000');
    	utl.socket.on('123456', (s) => {
@@ -1851,36 +1851,14 @@
 
    let flag = true;  
 
-   function updateMove$1(obj){
-       utl.box.transform.translate(new Laya.Vector3(utl.speedMove/5,0,0),true);
-   }
-   function tweend$1(){
-
-       let tweenObj= {
-           x:0
-       }; 
-       Laya.Tween.to(
-                   tweenObj,
-                   {x:10,
-                   update:new Laya.Handler(this,updateMove$1,[tweenObj])},
-                   50,
-                   Laya.Ease.linearNone,
-                   Laya.Handler.create(this,tweend$1,[tweenObj]),
-               0);
-       // flag = true
-   }
 
    class GameUI extends Laya.Scene {
        constructor() {
            super();
-           this.isTwoTouch = false;
-           this.twoFirst = true;
-           this.fucntkTemp =0;
-           this.temprx=0;
-           this.tempry=0;
-           this.temprz=0;
-           this.spled = 0;
-           this.spledy=0;
+           this.eventTemp = null;
+           this.mMap = new Map();
+           this.nowBoxs = {};
+           this.allBox = new Set();
            this.loadScene("test/TestScene.scene");
            this.newScene = Laya.stage.addChild(new Laya.Scene3D());
            this.loadingElse = new Map(utl.loadingElse);
@@ -1901,15 +1879,16 @@
            temp = this;
 
            // this.newScene.addChild(utl.models.get('light'));  
-           var directionLight = this.newScene.addChild(new Laya.DirectionLight());
-           directionLight.color = new Laya.Vector3(0.3, 0.3, 0.1);
-           directionLight.transform.worldMatrix.setForward(new Laya.Vector3(-1, -1, -1));
+           // var directionLight = this.newScene.addChild(new Laya.DirectionLight());
+           // directionLight.color = new Laya.Vector3(0.3, 0.3, 0.1);
+           // directionLight.transform.worldMatrix.setForward(new Laya.Vector3(-1, -1, -1));
 
-           socketMain();
+           // socketMain()
           
 
           
-           Laya.timer.loop(5,this,this.onUpdate);
+           Laya.timer.loop(10,this,this.onChange);
+           Laya.timer.loop(1000,this,this.onUpdata);
            
 
            // let map2 = utl.models.get('cube')
@@ -1924,20 +1903,196 @@
 
            utl.camera = camera;
            this.newScene.addChild(camera);
-           if(utl.playerId=='player-2'){
-               utl.camera.transform.position = new Laya.Vector3(-500, 30, 0);
-           }
+          	window.po= camera;
 
+   		let  plane= utl.models.get('plane');
+           this.newScene.addChild(plane);
 
-           let  terrain= utl.models.get('map');
+           let  terrain= utl.models.get('light');
            this.newScene.addChild(terrain);
 
 
            let box = utl.models.get('cube');
-           console.log(box,'-00000000000000000');
-           utl.box = box;
            this.newScene.addChild(box);
+
+           this.main = utl.models.get('main');
+           this.newScene.addChild(this.main);
+           window.po1 = this.main;
+
+           let map = utl.models.get('map');
+           this.newScene.addChild(map);
+           utl.box = map;
+            
+           map.active = false;
           
+           this.initCube();
+       }
+       initCube(){
+       	let fClass = new Date().getTime();
+       	this.main.transform.position = new Laya.Vector3(0,11,0);
+       	this.main.fClass = fClass;
+       	let po = this.main.transform.position;
+       	let m1 = utl.box.clone();
+       	this.newScene.addChild(m1);
+       	m1.fClass = fClass;
+       	m1.transform.position = new Laya.Vector3(po.x,po.y,po.z);
+
+       	let m2 = utl.box.clone();
+       	this.newScene.addChild(m2);
+       	m2.fClass = fClass;
+       	m2.transform.position = new Laya.Vector3(po.x-1,po.y,po.z);
+
+       	let m3 = utl.box.clone();
+       	this.newScene.addChild(m3);
+       	m3.fClass = fClass;
+       	m3.transform.position = new Laya.Vector3(po.x+1,po.y,po.z);
+
+       	let m4 = utl.box.clone();
+       	this.newScene.addChild(m4);
+       	m4.fClass = fClass;
+       	m4.transform.position = new Laya.Vector3(po.x,po.y+1,po.z);
+
+       	// this.m1 = m1
+       	// this.m2 = m2
+       	// this.m3 = m3
+       	// this.m4 = m4
+       	m1.active = true;
+       	m2.active = true;
+       	m3.active = true;
+       	m4.active = true;
+       	this.allBox.add(m1);
+       	this.allBox.add(m2);
+       	this.allBox.add(m3);
+       	this.allBox.add(m4);
+
+       	this.nowBoxs = [m1,m2,m3,m4];
+       	this.mMap.set(fClass,{flag : true});
+
+       }
+       onChange(){
+       	let po = this.main.transform.position;
+       	let ro = Math.round(this.main.transform.localRotationEulerZ);
+
+
+       	let m1 =this.nowBoxs[0];
+       	let m2 = this.nowBoxs[1];
+       	let m3 =this.nowBoxs[2];
+       	let m4 =this.nowBoxs[3];
+
+
+       	if(ro==-90){
+       		m1.transform.position = new Laya.Vector3(po.x,po.y,po.z);
+       	
+   	    	m2.transform.position = new Laya.Vector3(po.x,po.y-1,po.z);
+
+   	    	m3.transform.position = new Laya.Vector3(po.x,po.y+1,po.z);
+
+   	    	m4.transform.position = new Laya.Vector3(po.x-1,po.y,po.z);
+       	}
+
+       	if(ro==180){
+       		m1.transform.position = new Laya.Vector3(po.x,po.y,po.z);
+       	
+   	    	m2.transform.position = new Laya.Vector3(po.x+1,po.y,po.z);
+   	    	
+   	    	m3.transform.position = new Laya.Vector3(po.x-1,po.y,po.z);
+
+   	    	m4.transform.position = new Laya.Vector3(po.x,po.y-1,po.z);
+       	}
+
+       	if(ro==90){
+       		m1.transform.position = new Laya.Vector3(po.x,po.y,po.z);
+       	
+   	    	m2.transform.position = new Laya.Vector3(po.x,po.y+1,po.z);
+
+   	    	m3.transform.position = new Laya.Vector3(po.x,po.y-1,po.z);
+
+   	    	m4.transform.position = new Laya.Vector3(po.x+1,po.y,po.z);
+       	}
+       	if(ro==0){
+       		m1.transform.position = new Laya.Vector3(po.x,po.y,po.z);
+       	
+   	    	m2.transform.position = new Laya.Vector3(po.x-1,po.y,po.z);
+
+   	    	m3.transform.position = new Laya.Vector3(po.x+1,po.y,po.z);
+
+   	    	m4.transform.position = new Laya.Vector3(po.x,po.y+1,po.z);
+       	}
+       	this.eventConpont();
+       }
+       onUpdata(){
+       	
+       	let temp = this.getHowMove();
+       	if(temp){
+       		if(this.main.transform.position.y>0){
+   	    		this.main.transform.position.y-=.5;
+   	    	}else{
+   	    		this.main.transform.position.y =0;
+   	    		this.initCube();
+   	    	}
+       	}else{
+   	    	this.initCube();
+       	}
+
+
+       	for(let box of this.allBox.values()){
+
+       	}
+       }
+       getHowMove(){
+       	for(let mainBox of this.nowBoxs){
+       		if(!this.checkBox(mainBox)){
+       			return false
+       		}
+       	}
+       	return true
+       }
+       checkBox(obj){
+       	let {x:x1,y:y1,z:z1} = obj.transform.position;
+       	let yco = y1-.5;
+       	for(let box of this.allBox.values()){
+       		let {x,y,z} = box.transform.position;
+       		if(box.fClass==obj.fClass){
+       			continue
+       		}else{
+       			if(yco<y+1&&z==z1&&x==x1){
+   	    			return false
+   	    		}
+       		}
+       		
+       	}
+       	return true
+       }
+       eventConpont(){
+
+       	let touchCount = this.newScene.input.touchCount();
+           let {eventTemp} = this;
+           if(touchCount==0){
+
+           	this.eventTemp = null;
+           }else{
+           	let touch = this.newScene.input.getTouch(0);
+           	let {x,y} = touch.position;
+           	if(!eventTemp){
+           		this.eventTemp = {x,y};
+           		return
+           	}
+   	        let rote = ~~x- ~~eventTemp.x;
+   	        utl.camera.transform.rotate({x:0,y:rote* Math.PI / 180,z:0},true);
+   	        let moveY = (~~y- ~~eventTemp.y)/100;
+   	        let nowY = utl.camera.transform.position.y;
+   	        if(nowY+moveY>4){
+   	        	utl.camera.transform.translate(new Laya.Vector3(0, moveY, 0),true);
+   	        }
+   	        
+   	        // utl.camera.transform.position.y += moveY
+   	        this.eventTemp = {x,y};
+           }
+           
+
+       }
+       checkPo(){
+
        }
        addMouseEvent(){
            
@@ -2546,19 +2701,20 @@
    }
 
    const loadFile =  [
-   	[
-   		['light','https://xuxin.love/img/mogu/LayaScene_SampleScene/Conventional/Light.lh'],
-           ['cube','https://xuxin.love/img/mogu/LayaScene_SampleScene/Conventional/Cube.lh'],
-           ['camera','https://xuxin.love/img/mogu/LayaScene_SampleScene/Conventional/Camera.lh'],
-           ['map','https://xuxin.love/img/mogu/LayaScene_SampleScene/Conventional/map.lh'],
-           ['house','https://xuxin.love/img/mogu/LayaScene_SampleScene/Conventional/house.lh'],
-   	],
+   	// [
+   	// 	['light','https://xuxin.love/img/mogu/LayaScene_SampleScene/Conventional/Light.lh'],
+    //        ['cube','https://xuxin.love/img/mogu/LayaScene_SampleScene/Conventional/Cube.lh'],
+    //        ['camera','https://xuxin.love/img/mogu/LayaScene_SampleScene/Conventional/Camera.lh'],
+    //        ['map','https://xuxin.love/img/mogu/LayaScene_SampleScene/Conventional/map.lh'],
+    //        ['house','https://xuxin.love/img/mogu/LayaScene_SampleScene/Conventional/house.lh'],
+   	// ],
        [
-   		['light','https://xuxin.love/img/mogu/LayaScene_SampleScene/Conventional/Light.lh'],
-           ['cube','https://xuxin.love/img/mogu/LayaScene_SampleScene/Conventional/Cube.lh'],
-           ['camera','https://xuxin.love/img/mogu/LayaScene_SampleScene/Conventional/Camera.lh'],
-           ['map','https://xuxin.love/img/mogu/LayaScene_SampleScene/Conventional/map.lh'],
-           ['house','https://xuxin.love/img/mogu/LayaScene_SampleScene/Conventional/house.lh'],
+   		['light','res/LayaScene_fuck/Conventional/Directional Light.lh'],
+           ['cube','res/LayaScene_fuck/Conventional/Cube.lh'],
+           ['camera','res/LayaScene_fuck/Conventional/ca.lh'],
+           ['map','res/LayaScene_fuck/Conventional/m.lh'],
+           ['main','res/LayaScene_fuck/Conventional/main.lh'],
+           ['plane','res/LayaScene_fuck/Conventional/Plane.lh'],
    	]
    ];
 
@@ -4326,10 +4482,10 @@
 
    let flag$1 = true;  
 
-   function updateMove$2(obj){
+   function updateMove$1(obj){
       utl.box.transform.translate(new Laya.Vector3(utl.speedMove/5,0,0),true);
    }
-   function tweend$2(){
+   function tweend$1(){
 
       let tweenObj= {
           x:0
@@ -4337,10 +4493,10 @@
       Laya.Tween.to(
                   tweenObj,
                   {x:10,
-                  update:new Laya.Handler(this,updateMove$2,[tweenObj])},
+                  update:new Laya.Handler(this,updateMove$1,[tweenObj])},
                   50,
                   Laya.Ease.linearNone,
-                  Laya.Handler.create(this,tweend$2,[tweenObj]),
+                  Laya.Handler.create(this,tweend$1,[tweenObj]),
               0);
       // flag = true
    }
