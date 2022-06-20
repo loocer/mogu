@@ -2029,14 +2029,56 @@
    	    	}else{
    	    		this.main.transform.position.y =0;
    	    		this.initCube();
+   	    		this.checkDistory();
    	    	}
        	}else{
    	    	this.initCube();
+   	    	this.checkDistory();
        	}
 
 
        	for(let box of this.allBox.values()){
 
+       	}
+       }
+       checkDistory(){
+       	let array = [];
+       	for(let box1 of this.allBox.values()){
+
+       		let {x,y,z} = box1.transform.position;
+       		let list1 = [];
+       		let list2 = [];
+       		for(let box2 of this.allBox.values()){
+       			let {x:x2,y:y2,z:z2} = box2.transform.position;
+       			if(y==y2&&x==x2){
+       				list1.push(box2);
+       			}
+       			if(y==y2&&z==z2){
+       				list2.push(box2);
+       			}
+       		}
+       		if(list1.length==5){
+       			for(let b of list1){
+       				array.push(b);
+       				this.allBox.delete(b);
+       			}
+       		}
+       		if(list2.length==5){
+       			for(let b2 of list2){
+       				array.push(b2);
+       				this.allBox.delete(b2);
+       			}
+       		}
+       	}
+       	for(let a of array){
+       		let {x:x5,y:y5,z:z5} = a.transform.position;
+       		a.destroy();
+       		for(let fuck of this.allBox.values()){
+       			let {x:x3,y:y3,z:z3} = fuck.transform.position;
+       			if(x5==x3&&z3==z5&&y5+1==y3){
+       				fuck.transform.position.y--;
+       			}
+       		}	
        	}
        }
        getHowMove(){
