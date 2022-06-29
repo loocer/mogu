@@ -65,9 +65,11 @@
        // updates:[],
        // firs:[],
        loadingElse:[
-            ['adds','https://xuxin.love/img/redcode/icon/adds.png'],
-            ['addsStop','https://xuxin.love/img/redcode/icon/add-stop.png'],
-            ['addsStart','https://xuxin.love/img/redcode/icon/add-start.png'],
+            ['bottom','res/caret-bottom.png'],
+            ['top','res/caret-top.png'],
+            ['right','res/caret-right.png'],
+            ['left','res/caret-left.png'],
+            ['ff','res/1656499002775.jpg']
            // ['tdf','https://xuxin.love/img/fly/u=3199317496,3290195022&fm=26&gp=0.jpg'],
            // ['fire','https://xuxin.love/img/fly/fires.png'],
            // ['left','https://xuxin.love/img/fly/left.png'],
@@ -1851,6 +1853,7 @@
 
    let flag = true;  
 
+   let ayncsyTime = false;//控制点击频率
 
    class GameUI extends Laya.Scene {
        constructor() {
@@ -2075,7 +2078,8 @@
        		a.destroy();
        		for(let fuck of this.allBox.values()){
        			let {x:x3,y:y3,z:z3} = fuck.transform.position;
-       			if(x5==x3&&z3==z5&&y5+1==y3){
+       			if(x5==x3&&z3==z5&&y5<y3){
+       				console.log(3333);
        				fuck.transform.position.y--;
        			}
        		}	
@@ -2110,11 +2114,12 @@
        	let touchCount = this.newScene.input.touchCount();
            let {eventTemp} = this;
            if(touchCount==0){
-
+               ayncsyTime= true;
            	this.eventTemp = null;
            }else{
            	let touch = this.newScene.input.getTouch(0);
            	let {x,y} = touch.position;
+               this.lisnerButton(x,y);
            	if(!eventTemp){
            		this.eventTemp = {x,y};
            		return
@@ -2130,8 +2135,41 @@
    	        // utl.camera.transform.position.y += moveY
    	        this.eventTemp = {x,y};
            }
+
            
 
+       }
+       lisnerButton(x,y){
+           if(!ayncsyTime){
+              
+               return
+           }
+           ayncsyTime = false;
+           let {x:x1,y:y1} = this.sprite;
+           if(200+x1<x&&x<x1+400
+             &&y1<y&&y<y1+200
+           ){
+               this.main.transform.translate(new Laya.Vector3(-1, 0, 0),false);
+               console.log(22222222);
+           }
+            if(x1-200<x&&x<x1
+             &&y1<y&&y<y1+200
+           ){
+               this.main.transform.translate(new Laya.Vector3(1, 0, 0),false);
+               console.log(3333333);
+           }
+           if(x1<x&&x<x1+200
+             &&y1>y&&y>y1-200
+           ){
+               this.main.transform.translate(new Laya.Vector3(0, 0, 1),false);
+               console.log('top');
+           }
+            if(x1<x&&x<x1+200
+             &&y1+200<y&&y<y1+400
+           ){
+               this.main.transform.translate(new Laya.Vector3(0, 0, -1),false);
+               console.log('bottom');
+           }
        }
        checkPo(){
 
@@ -2151,11 +2189,38 @@
        drawUi(){
            
            // this.addMouseEvent()
-           // let adds = this.loadingElse.get('addsStop')
-           // let addsImg = new  Laya.Image(adds);
-           // addsImg.height = 150
-           // addsImg.width =150
-           // addsImg.pos(200, Laya.stage.height - 200);
+           this.sprite = new Laya.Sprite();
+           Laya.stage.addChild(this.sprite);
+           let bottom = this.loadingElse.get('ff');
+           let bottomImg = new  Laya.Image(bottom);
+           bottomImg.height = 200;
+           bottomImg.width =200;
+            bottomImg.pos(0, 200);
+            this.sprite.addChild(bottomImg);
+
+            let left = this.loadingElse.get('ff');
+           let leftImg = new  Laya.Image(left);
+           leftImg.height = 200;
+           leftImg.width =200;
+            leftImg.pos(-200, 0);
+            this.sprite.addChild(leftImg);
+
+              let right = this.loadingElse.get('ff');
+           let rightImg = new  Laya.Image(right);
+           rightImg.height = 200;
+           rightImg.width =200;
+            rightImg.pos(200, 0);
+            this.sprite.addChild(rightImg);
+
+
+              let top = this.loadingElse.get('ff');
+           let topImg = new  Laya.Image(top);
+           topImg.height = 200;
+           topImg.width =200;
+            topImg.pos(0, -200);
+            this.sprite.addChild(topImg);
+
+            this.sprite.pos(200, Laya.stage.height - 600);
            // utl.addsImg = addsImg
            // Laya.stage.addChild(addsImg);
            //  utl.showbox = new Laya.MeshSprite3D(Laya.PrimitiveMesh.createBox(1, 1, 1));
@@ -2258,49 +2323,7 @@
            // this.info.text = flagod+','+touchCount
 
        }
-       gunMove(){
-            let ship = utl.box.getChildByName('camermain');
-            let acObj = ship.getChildByName('ac');
-
-           
-
-            if(utl.roteGun.x!=utl.roteGunTemp.x){
-                    if(Math.abs(utl.roteGun.x-utl.roteGunTemp.x)>.1){
-                       utl.roteGunTemp.x = utl.roteGun.x>utl.roteGunTemp.x?utl.roteGunTemp.x+.1:utl.roteGunTemp.x-.1;
-                   }else{
-                       if(utl.roteGun.x==0){
-                           utl.roteGunTemp.x = 0;
-                       }
-                       
-                   }
-               }
-               if(utl.roteGun.y!=utl.roteGunTemp.y){
-                   if(Math.abs(utl.roteGun.y-utl.roteGunTemp.y)>.1){
-                       utl.roteGunTemp.y = utl.roteGun.y>utl.roteGunTemp.y?utl.roteGunTemp.y+.1:utl.roteGunTemp.y-.1;
-                   }else{
-                       if(utl.roteGun.y==0){
-                           utl.roteGunTemp.y = 0;
-                       }
-                      
-                   }
-               }
-               let x = utl.roteGunTemp.x;       
-               let y = utl.roteGunTemp.y;
-
-            
-
-
-           acObj.transform.rotate(new Laya.Vector3(0,0,-utl.roteGunback.y* Math.PI / 180),true);
-           acObj.transform.rotate(new Laya.Vector3(0,-utl.roteGunback.x* Math.PI / 180,0),true);
-         
-           acObj.transform.rotate(new Laya.Vector3(0,x* Math.PI / 180,0),true);
-           acObj.transform.rotate(new Laya.Vector3(0,0,y* Math.PI / 180),true);
-
-          
-
-           utl.roteGunback.x = x;
-           utl.roteGunback.y = y;
-       }
+       
        checkFire(){
             let bmain =utl.bullet.getChildByName('ship');
            let bcube = bmain.getChildByName('Cube');
