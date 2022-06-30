@@ -34,7 +34,9 @@ export default class GameUI extends Laya.Scene {
     constructor() {
         super();
         this.eventTemp = null
+        this.roteValue = 0
         this.mMap = new Map()
+        this.go = false
         this.nowBoxs = {}
         this.allBox = new Set()
         this.loadScene("test/TestScene.scene");
@@ -96,7 +98,7 @@ export default class GameUI extends Laya.Scene {
         this.main = utl.models.get('main')
         this.newScene.addChild(this.main);
         window.po1 = this.main
-
+        window.wuru = this
         let map = utl.models.get('map')
         this.newScene.addChild(map);
         utl.box = map
@@ -150,15 +152,16 @@ export default class GameUI extends Laya.Scene {
     onChange(){
     	let po = this.main.transform.position
     	let ro = Math.round(this.main.transform.localRotationEulerZ)
+        
 
 
     	let m1 =this.nowBoxs[0]
-    	let m2 = this.nowBoxs[1]
+    	let m2 =this.nowBoxs[1]
     	let m3 =this.nowBoxs[2]
     	let m4 =this.nowBoxs[3]
 
 
-    	if(ro==-90){
+    	if(ro==270){
     		m1.transform.position = new Laya.Vector3(po.x,po.y,po.z)
     	
 	    	m2.transform.position = new Laya.Vector3(po.x,po.y-1,po.z)
@@ -199,11 +202,19 @@ export default class GameUI extends Laya.Scene {
     	this.eventConpont()
     }
     onUpdata(){
-    	
+    	if(this.go){
+            return
+        }
     	let temp = this.getHowMove()
     	if(temp){
     		if(this.main.transform.position.y>0){
 	    		this.main.transform.position.y-=.5
+                let temp = this.getHowMove()
+                if(!temp){
+                    this.main.transform.position.y+=.5
+                    this.initCube()
+                    this.checkDistory()
+                }
 	    	}else{
 	    		this.main.transform.position.y =0
 	    		this.initCube()
@@ -255,7 +266,8 @@ export default class GameUI extends Laya.Scene {
     			let {x:x3,y:y3,z:z3} = fuck.transform.position
     			if(x5==x3&&z3==z5&&y5<y3){
     				console.log(3333)
-    				fuck.transform.position.y--
+    				// fuck.transform.position.y--
+                    fuck.transform.translate(new Laya.Vector3(0, -1, 0),true);
     			}
     		}	
     	}
@@ -284,6 +296,38 @@ export default class GameUI extends Laya.Scene {
     	}
     	return true
     }
+     getacFlag(){
+        for(let mainBox of this.nowBoxs){
+            if(!this.checkBoxfalg(mainBox)){
+                return false
+            }
+        }
+        return true
+    }
+    constfuck(){
+        for(let box of this.allBox.values()){
+           let {x,y,z} = box.transform.position
+           console.log(x,y,z)
+            
+        }
+    }
+    checkBoxfalg(obj){
+        let {x:x1,y:y1,z:z1} = obj.transform.position
+        for(let box of this.allBox.values()){
+            let {x,y,z} = box.transform.position
+            if(box.fClass==obj.fClass){
+                continue
+            }else{
+                if(z==z1&&x==x1){
+                    if(y1==y||y1==y+.5){
+                        return false
+                    }
+                }
+            }
+            
+        }
+        return true
+    }
     eventConpont(){
 
     	let touchCount = this.newScene.input.touchCount();
@@ -299,9 +343,9 @@ export default class GameUI extends Laya.Scene {
         		this.eventTemp = {x,y}
         		return
         	}
-	        let rote = ~~x- ~~eventTemp.x
+	        let rote = (~~x- ~~eventTemp.x)/10
 	        utl.camera.transform.rotate({x:0,y:rote* Math.PI / 180,z:0},true)
-	        let moveY = (~~y- ~~eventTemp.y)/100
+	        let moveY = (~~y- ~~eventTemp.y)/200
 	        let nowY = utl.camera.transform.position.y
 	        if(nowY+moveY>4){
 	        	utl.camera.transform.translate(new Laya.Vector3(0, moveY, 0),true);
@@ -321,30 +365,76 @@ export default class GameUI extends Laya.Scene {
         }
         ayncsyTime = false
         let {x:x1,y:y1} = this.sprite
+         let {x:x2,y:y2} = this.roteSprite
         if(200+x1<x&&x<x1+400
           &&y1<y&&y<y1+200
         ){
             this.main.transform.translate(new Laya.Vector3(-1, 0, 0),false)
-            console.log(22222222)
+            this.onChange()
+            let flag = this.getacFlag()
+            if(!flag){
+                this.main.transform.translate(new Laya.Vector3(1, 0, 0),false)
+                console.log(22222222)
+            }
+            
         }
          if(x1-200<x&&x<x1
           &&y1<y&&y<y1+200
         ){
             this.main.transform.translate(new Laya.Vector3(1, 0, 0),false)
+            this.onChange()
+            let flag = this.getacFlag()
+            if(!flag){
+                this.main.transform.translate(new Laya.Vector3(-1, 0, 0),false)
+                console.log(22222222)
+            }
             console.log(3333333)
         }
         if(x1<x&&x<x1+200
           &&y1>y&&y>y1-200
         ){
             this.main.transform.translate(new Laya.Vector3(0, 0, 1),false)
+             this.onChange()
+            let flag = this.getacFlag()
+            if(!flag){
+                this.main.transform.translate(new Laya.Vector3(0, 0, -1),false)
+                console.log(22222222)
+            }
             console.log('top')
         }
          if(x1<x&&x<x1+200
           &&y1+200<y&&y<y1+400
         ){
             this.main.transform.translate(new Laya.Vector3(0, 0, -1),false)
+            this.onChange()
+            let flag = this.getacFlag()
+            if(!flag){
+                this.main.transform.translate(new Laya.Vector3(0, 0, 1),false)
+                console.log(22222222)
+            }
             console.log('bottom')
         }
+
+        //--------------------roteLft
+         if(x2<x&&x<x2+200
+          &&y1<y&&y<y1+200
+        ){
+
+            this.roteValue +=90 
+
+            this.main.transform.localRotationEulerZ = this.roteValue%360
+
+            this.onChange()
+            let flag = this.getacFlag()
+            if(!flag){
+                this.roteValue -=90 
+                this.main.transform.localRotationEulerZ = this.roteValue%360
+                console.log(this.roteValue%360)
+            }
+            console.log(this.roteValue%360)
+            console.log('bottom')
+        }
+
     }
     checkPo(){
 
@@ -396,6 +486,19 @@ export default class GameUI extends Laya.Scene {
          this.sprite.addChild(topImg)
 
          this.sprite.pos(200, Laya.stage.height - 600);
+
+
+
+
+         this.roteSprite = new Laya.Sprite();
+          let roteLeft = this.loadingElse.get('ff')
+        let roteLeftImg = new  Laya.Image(roteLeft);
+        roteLeftImg.height = 200
+        roteLeftImg.width =200
+         roteLeftImg.pos(0, 0);
+         this.roteSprite.addChild(roteLeftImg)
+        Laya.stage.addChild(this.roteSprite);
+        this.roteSprite.pos(Laya.stage.width-200, Laya.stage.height - 600);
         // utl.addsImg = addsImg
         // Laya.stage.addChild(addsImg);
         //  utl.showbox = new Laya.MeshSprite3D(Laya.PrimitiveMesh.createBox(1, 1, 1));
