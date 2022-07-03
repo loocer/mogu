@@ -13,22 +13,22 @@
 				"depthTest":515
 			}
 		],
-		"enableVertexColor":true,
-		"alphaTest":true,
-		"alphaTestValue":0.517,
-		"renderQueue":2450,
-		"albedoIntensity":1,
+		"enableVertexColor":false,
+		"alphaTest":false,
+		"alphaTestValue":1,
+		"renderQueue":2000,
+		"albedoIntensity":4,
 		"enableLighting":true,
-		"shininess":0.862,
+		"shininess":1,
 		"textures":[],
 		"vectors":[
 			{
 				"name":"tilingOffset",
 				"value":[
-					1,
-					1,
 					0,
-					0
+					1,
+					90,
+					90
 				]
 			},
 			{
@@ -43,9 +43,9 @@
 			{
 				"name":"albedoColor",
 				"value":[
-					0,
+					0.004716992,
 					1,
-					0.4480875,
+					0.2623197,
 					1
 				]
 			}

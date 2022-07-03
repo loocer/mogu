@@ -9,7 +9,7 @@ export const loadFile =  [
     [
 		['light','res/LayaScene_fuck/Conventional/Directional Light.lh'],
         ['cube','res/LayaScene_fuck/Conventional/Cube.lh'],
-        ['camera','res/LayaScene_fuck/Conventional/ca.lh'],
+        ['camera','res/LayaScene_fuck/Conventional/cam.lh'],
         ['map','res/LayaScene_fuck/Conventional/m.lh'],
         ['main','res/LayaScene_fuck/Conventional/main.lh'],
         ['plane','res/LayaScene_fuck/Conventional/Plane.lh'],

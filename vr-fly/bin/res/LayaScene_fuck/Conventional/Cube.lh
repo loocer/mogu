@@ -10,7 +10,7 @@
 			"layer":0,
 			"position":[
 				0,
-				4.5,
+				11.5,
 				0
 			],
 			"rotation":[
@@ -20,9 +20,9 @@
 				-1
 			],
 			"scale":[
-				5,
-				10,
-				5
+				11,
+				24,
+				11
 			],
 			"meshPath":"Library/unity default resources-Cube.lm",
 			"enableRender":true,
@@ -332,7 +332,7 @@
 				"type":"MeshSprite3D",
 				"instanceID":6,
 				"props":{
-					"name":"jishi",
+					"name":"Plane",
 					"active":true,
 					"isStatic":false,
 					"layer":0,
@@ -348,17 +348,18 @@
 						-1
 					],
 					"scale":[
+						0.1,
 						1,
-						0.01,
-						1
+						0.1
 					],
-					"meshPath":"Library/unity default resources-Cube.lm",
+					"meshPath":"Library/unity default resources-Plane.lm",
 					"enableRender":true,
 					"receiveShadows":true,
 					"castShadow":true,
 					"materials":[
 						{
-							"path":"Assets/New Material.lmat"
+							"type":"Laya.BlinnPhongMaterial",
+							"path":"Resources/unity_builtin_extra.lmat"
 						}
 					]
 				},
@@ -370,17 +371,8 @@
 						"rollingFriction":0,
 						"shapes":[
 							{
-								"type":"BoxColliderShape",
-								"center":[
-									0,
-									0,
-									0
-								],
-								"size":[
-									1,
-									1,
-									1
-								]
+								"type":"MeshColliderShape",
+								"mesh":"Library/unity default resources-Plane.lm"
 							}
 						],
 						"isTrigger":false
