@@ -1,4 +1,4 @@
-// v1.8.22
+// v1.8.24
 //是否使用IDE自带的node环境和插件，设置false后，则使用自己环境(使用命令行方式执行)
 const useIDENode = process.argv[0].indexOf("LayaAir") > -1 ? true : false;
 const useCMDNode = process.argv[1].indexOf("layaair2-cmd") > -1 ? true : false;
@@ -709,40 +709,29 @@ gulp.task("renameVersionJson", ["renameIndexJs"] , function () {
 	if (platform === "layame") {
 		return;
 	}
+
 	if (config.version) {
 		// 如果启用版本管理，则修改version文件名
-		console.log('releaseDir', releaseDir);
 		let versionJsonJsOrigin = path.join(releaseDir, "version.json");
-		let versionPath = versionJsonJsOrigin;// releaseDir + "/version.json";
-		gulp.src(versionJsonJsOrigin, { base: releaseDir })
-		.pipe(rev()) 
-		.pipe(rev.manifest({
-			path: versionPath,
-			merge: true
-		}))
-		.pipe(gulp.dest("./"))
-		.on('end', function () {
-			
-			let versionJsonJsOrigin = path.join(releaseDir, "version.json");
-			let versionConStr = fs.readFileSync(versionJsonJsOrigin, "utf8");
-			let versionCon = JSON.parse(versionConStr);
-			console.log('versionCon',versionCon );
-			let renameVersionJson = path.join(releaseDir, versionCon['version.json']);
-			// fs.renameSync(versionJsonJsOrigin, renameVersionJson); 
-			// 最后再删除versionjson
-			fs.writeFileSync(renameVersionJson, versionConStr, 'utf8');
-			
-
-			// 修改js/bundle.js里加载version.json路径
-			var bundleJSPath = path.join(releaseDir, versionCon['js/bundle.js'] || "js/bundle.js") ;
-			bundleJSStr = fs.readFileSync(bundleJSPath, "utf8"); 
-			bundleJSStr = bundleJSStr.replace('ResourceVersion.enable(\"version.json\"', `ResourceVersion.enable("${versionCon['version.json']}"`);
-			bundleJSStr = bundleJSStr.replace('version.config_version_md5_name.json', `${versionCon['version.json']}`);
-			
+		let versionConStr = fs.readFileSync(versionJsonJsOrigin, "utf8");
+		let versionCon = JSON.parse(versionConStr);
+		var bundleJSPath = path.join(releaseDir, versionCon['js/bundle.js'] || "js/bundle.js");
+		bundleJSStr = fs.readFileSync(bundleJSPath, "utf8");
+		if (!versionCon['version.json']) {
+			//如果没有找到version.json也需要修改version.config_version_md5_name.json为version.json
+			bundleJSStr = bundleJSStr.replace('version.config_version_md5_name.json', 'version.json');
 			fs.writeFileSync(bundleJSPath, bundleJSStr, "utf8");
-			
-		});
+			return;
+		}
+		let renameVersionJson = path.join(releaseDir, versionCon['version.json']);
+		// 最后再删除versionjson
+		fs.writeFileSync(renameVersionJson, versionConStr, 'utf8');
+
+		// 修改js/bundle.js里加载version.json路径
 		
+		bundleJSStr = bundleJSStr.replace('ResourceVersion.enable(\"version.json\"', `ResourceVersion.enable("${versionCon['version.json']}"`);
+		bundleJSStr = bundleJSStr.replace('version.config_version_md5_name.json', `${versionCon['version.json']}`);
+		fs.writeFileSync(bundleJSPath, bundleJSStr, "utf8");
 	}
 });
 // 替换index.html/game.js/main.js以及index.js里面的变化的文件名
@@ -822,10 +811,14 @@ gulp.task("packfile", platformTask, function() {
 	if (platform === "layame") {
 		return;
 	}
-	if (config.version) { 
-		let versionJsonJsOrigin = versionJsonJsOrigin_tmp.replace("/temprelease", `/${taobaoFolders}`) ;// path.join(releaseDir, "version.json");
-		// console.log('versionJsonJsOrigin_tmp', versionJsonJsOrigin_tmp);
-		if (fs.existsSync(versionJsonJsOrigin)) { 
+	if (config.version) {
+		let versionJsonJsOrigin = versionJsonJsOrigin_tmp.replace("/temprelease", `/${taobaoFolders}`);// path.join(releaseDir, "version.json");
+		let versionConStr = fs.readFileSync(versionJsonJsOrigin, "utf8");
+		let versionCon = JSON.parse(versionConStr);
+		if (!versionCon['version.json']) {
+			return;
+		}
+		if (fs.existsSync(versionJsonJsOrigin)) {
 			fs.unlinkSync(versionJsonJsOrigin);
 		}
 	}

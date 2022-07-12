@@ -86,7 +86,7 @@ export default class GameUI extends Laya.Scene {
        
 
        
-        Laya.timer.loop(10,this,this.onChangeMain);
+        // Laya.timer.loop(10,this,this.onChangeMain);
         Laya.timer.loop(10,this,this.onUpdata);
         Laya.timer.loop(10,this,this.onUpdataComeOn);
         
@@ -280,12 +280,14 @@ export default class GameUI extends Laya.Scene {
     	// this.eventConpont()
     }
     onUpdataComeOn(){
+        this.onChangeMain()
          if(!this.gameFalg){
             return 
         }
         if(!this.go){
             return
         }
+        
         let temp = this.getHowMove()
         if(temp){
             if(this.checkisUp()){
@@ -323,12 +325,14 @@ export default class GameUI extends Laya.Scene {
         return true
     }
     onUpdata(){
+        this.onChangeMain()
          if(!this.gameFalg){
             return 
         }
     	if(this.go){
             return
         }
+       
         let temp = this.getHowMove()
         if(temp){
             if(this.checkisUp()){
@@ -455,10 +459,15 @@ export default class GameUI extends Laya.Scene {
             if(box.fClass==obj.fClass){
                 continue
             }else{
-                if(z==z1&&x==x1){
-                    if(y1==y||y1==y+.5){
+                if(
+                    z+1>z1&&z-1<z1&&
+                    x+1>x1&&x-1<x1&&
+                    y+1>y1&&y-1<y1
+                ){
+                // if(z==z1&&x==x1){
+                    // if(y1==y||y1==y+.5){
                         return false
-                    }
+                    // }
                 }
             }
             
