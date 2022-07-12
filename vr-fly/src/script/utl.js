@@ -62,11 +62,13 @@ export default  {
     // updates:[],
     // firs:[],
     loadingElse:[
-         ['bottom','res/caret-bottom.png'],
-         ['top','res/caret-top.png'],
-         ['right','res/caret-right.png'],
-         ['left','res/caret-left.png'],
-         ['ff','res/1656499002775.jpg']
+         ['bottom','res/botoom.png'], 
+         ['top','res/top.png'],
+         ['right','res/right.png'],
+         ['left','res/left.png'],
+         ['rote','res/rote.png'],
+         ['down','res/down.png'],
+         ['ff','res/down.png']
         // ['tdf','https://xuxin.love/img/fly/u=3199317496,3290195022&fm=26&gp=0.jpg'],
         // ['fire','https://xuxin.love/img/fly/fires.png'],
         // ['left','https://xuxin.love/img/fly/left.png'],
